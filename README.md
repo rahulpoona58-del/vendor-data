@@ -1,16 +1,23 @@
-# Vendor Data Quality & Trust Issues
+# 🛡️ Vendor Data Quality & Trust Issues
 
-![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat&logo=python&logoColor=white)
-![Flask](https://img.shields.io/badge/Flask-3.0+-000000?style=flat&logo=flask&logoColor=white)
-![SQLite](https://img.shields.io/badge/SQLite-3.0+-003B57?style=flat&logo=sqlite&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?style=flat&logo=docker&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-blue.svg)
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
+[![Flask](https://img.shields.io/badge/Flask-3.0+-000000?style=flat&logo=flask&logoColor=white)](https://flask.palletsprojects.org/)
+[![SQLite](https://img.shields.io/badge/SQLite-3.0+-003B57?style=flat&logo=sqlite&logoColor=white)](https://www.sqlite.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?style=flat&logo=docker&logoColor=white)](https://www.docker.com/)
+[![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0-85EA2D?style=flat&logo=openapi-initiative&logoColor=black)](http://localhost:5000/api/v2/docs)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-An enterprise vendor governance, compliance auditing, risk scoring, and fraud detection platform.
+An enterprise-grade vendor governance, compliance auditing, risk scoring, and fraud detection platform.
 
 ---
 
-## About
+> [!NOTE]
+> This platform provides automated vendor data verification, multi-factor trust scoring, Isolation Forest anomaly detection, and audit trail logging for enterprise procurement systems.
+
+---
+
+## 📋 About
 
 ### What Problem This Project Solves
 Organizations struggle with inconsistent vendor profile information, unverified tax identifiers, missing compliance documentation, and unmonitored risk factors across procurement workflows.
@@ -25,67 +32,56 @@ Manual vendor auditing is slow and prone to oversight. Organizations need a unif
 - **Auditors & Leadership**: Review executive telemetry, audit trails, and system-wide compliance posture.
 
 ### What the Application Does
-The application aggregates vendor data into a centralized database, calculates real-time trust and quality scores, scans uploaded documents, identifies duplicate identifiers and billing anomalies, tracks system-wide audit events, and provides role-based access control with interactive dashboards.
+The application aggregates vendor data into a centralized database, calculates real-time trust and quality scores, scans uploaded documents, identifies duplicate tax identifiers and billing anomalies, tracks system-wide audit events, and provides 5-role access control with interactive dashboards.
 
 ---
 
-## Features
+## ✨ Features
 
 ### Vendor Management
-- Full CRUD operations for vendor profiles.
-- Tax identifier validation (GSTIN and PAN number formats).
-- Categorization across IT, Logistics, Healthcare, Finance, Manufacturing, Telecom, and Consulting.
-- Location mapping across major geographic regions.
+- ✔ Full CRUD operations for enterprise vendor profiles
+- ✔ Tax identifier validation (GSTIN and PAN formats)
+- ✔ Categorization across 8 major business sectors
+- ✔ GIS location mapping across major geographic regions
 
 ### Trust Engine
-- Multi-factor trust score calculation (0.0 to 100.0).
-- Dynamic trust tiering (High Trust, Medium Trust, Low Trust).
-- Automated score adjustment based on compliance history, SLA performance, and document status.
+- ✔ Multi-factor trust score calculation (0.0 to 100.0 index)
+- ✔ Dynamic trust tiering (High Trust, Medium Trust, Low Trust)
+- ✔ Score recalculation based on compliance history and document status
 
 ### Risk Engine
-- Isolation Forest anomaly detection for abnormal financial and operational patterns.
-- Predictive alert generation for impending risk threshold breaches.
-- Categorized risk severity levels (Critical, High, Medium, Low).
+- ✔ Isolation Forest anomaly detection for abnormal financial patterns
+- ✔ Predictive alert generation for impending risk threshold breaches
+- ✔ Categorized risk severity levels (Critical, High, Medium, Low)
 
 ### Fraud Detection
-- Duplicate GSTIN and PAN cross-reference verification.
-- Blacklist screening and bank account hashing checks.
-- Flagged case management with evidence recording and investigation tracking.
+- ✔ Duplicate GSTIN and PAN cross-reference verification
+- ✔ Blacklist entity screening and bank account hashing checks
+- ✔ Investigation case management with evidence recording
 
 ### Compliance
-- Document expiration monitoring and audit timeline logging.
-- Compliance status tracking (Approved, Pending Review, Non-Compliant).
-- Automated compliance percentage aggregation.
+- ✔ Document expiration monitoring and audit timeline logging
+- ✔ Compliance status tracking (Approved, Pending Review, Non-Compliant)
+- ✔ Automated compliance percentage aggregation
 
 ### OCR & Document Verification
-- Binary magic byte validation (`%PDF-`) for uploaded vendor files.
-- Automated document hash generation (SHA-256) to prevent duplicate uploads.
-- Verification status tracking (Verified, Pending, Under Review).
+- ✔ Binary magic byte validation (`%PDF-`) for uploaded vendor files
+- ✔ SHA-256 document hashing to prevent duplicate uploads
+- ✔ Document verification status tracking
 
 ### Executive Dashboard
-- High-level KPI summary (total vendors, average trust score, compliance rate, active fraud alerts).
-- Geographic vendor distribution visualization via interactive GIS maps.
-- Category breakdown and top vendor performance rankings.
+- ✔ High-level KPI summary (total vendors, avg trust, compliance %, active fraud alerts)
+- ✔ Interactive GIS geographic vendor map visualization
+- ✔ Category distribution breakdowns and performance rankings
 
-### Reports
-- Exportable audit reports in CSV and JSON formats.
-- Comprehensive telemetry data aggregation for compliance reporting.
-
-### AI Assistant
-- Grounded contextual copilot providing response synthesis for vendor profiles and audit records.
-
-### Audit Trail
-- System-wide immutable logging of configuration changes, score overrides, and user actions.
-- Client IP address and module-level audit tracking.
-
-### Authentication & Security
-- 5-Role Role-Based Access Control (`Admin`, `Manager`, `Auditor`, `Analyst`, `Viewer`).
-- Password hashing using PBKDF2 with SHA-256.
-- Session authorization and token revocation checks.
+### Reports & Audit Trail
+- ✔ Exportable audit reports in CSV and JSON formats
+- ✔ Immutable audit trail recording user actions, IP addresses, and configuration changes
+- ✔ Grounded AI assistant for contextual profile summary and document queries
 
 ---
 
-## Screenshots
+## 📸 Screenshots
 
 <!-- Executive Dashboard Screenshot -->
 <!-- Vendor Directory 360 Screenshot -->
@@ -95,59 +91,59 @@ The application aggregates vendor data into a centralized database, calculates r
 
 ---
 
-## System Architecture
+## 🏗️ Architecture
 
 ```mermaid
 graph TD
-    A["Client Browser"] -->|HTTP / HTTPS| B["Flask Application"]
-    B -->|Authentication & RBAC| C["Domain Service Layer"]
+    A["Client Browser"] -->|HTTP / HTTPS| B["Flask Application Server"]
+    B -->|Authentication & 5-Role RBAC| C["Domain Service Layer"]
     C -->|Trust / Risk / Fraud Engines| D["SQLAlchemy ORM"]
-    D -->|Persistence| E[("SQLite / PostgreSQL")]
+    D -->|Persistence| E[("SQLite / PostgreSQL Database")]
 ```
 
 ---
 
-## Technology Stack
+## 🛠️ Tech Stack
 
-| Layer | Technologies |
+| Layer | Technologies Used |
 |---|---|
 | **Frontend** | HTML5, Vanilla JavaScript, Vanilla CSS, ApexCharts, Leaflet.js |
-| **Backend** | Python 3.11+, Flask Framework, Gunicorn |
+| **Backend** | Python 3.11+, Flask Framework, Gunicorn WSGI Server |
 | **Database** | SQLite (Development/Demo), PostgreSQL (Production), SQLAlchemy ORM |
-| **Authentication** | Custom Session Auth, PBKDF2 Password Hashing, 5-Role RBAC |
-| **AI / ML** | scikit-learn (Isolation Forest Anomaly Detection), TF-IDF Vector Search |
+| **Authentication** | Session Auth, PBKDF2 Password Hashing (SHA-256), 5-Role RBAC |
+| **AI & Machine Learning** | scikit-learn (Isolation Forest), TF-IDF Vector Search, RAG Grounding |
 | **Deployment** | Docker, Docker Compose, WSGI / Gunicorn |
 | **Testing** | pytest, Python unittest |
 
 ---
 
-## Folder Structure
+## 📂 Project Structure
 
 ```text
 vendor_project/
-├── app.py                      # Main application entry point & Flask initialization
-├── config.py                   # Platform configuration settings
+├── app.py                      # Main Flask application entry point
+├── config.py                   # System configuration & environment variables
 ├── requirements.txt            # Python dependencies
-├── Dockerfile                  # Container build instructions
-├── docker-compose.yml          # Container orchestration configuration
-├── LICENSE                     # MIT License file
+├── Dockerfile                  # Production container definition
+├── docker-compose.yml          # Docker Compose orchestration
+├── LICENSE                     # MIT License
 ├── src/
 │   ├── domain/
-│   │   ├── services/           # Enterprise domain logic & data services
+│   │   ├── services/           # Business logic & enterprise data services
 │   │   └── engines/            # Trust, risk, fraud, and predictive calculation engines
 │   ├── infrastructure/
-│   │   ├── database/           # SQLAlchemy ORM models & database setup
-│   │   └── security/           # RBAC decorators & password utilities
+│   │   ├── database/           # SQLAlchemy ORM schemas and DB setup
+│   │   └── security/           # RBAC decorators and security utilities
 │   └── presentation/
-│       └── api/                # REST API blueprints (auth, vendors, analytics, audit)
-├── templates/                  # HTML templates (demo portal, executive, dashboard)
-├── static/                     # CSS stylesheets, JS scripts, and OpenAPI specification
-└── instance/                   # SQLite database storage (vendor_trust.db)
+│       └── api/                # REST API blueprints
+├── templates/                  # Frontend HTML view templates
+├── static/                     # CSS stylesheets, JS modules, OpenAPI spec
+└── instance/                   # SQLite database storage directory
 ```
 
 ---
 
-## Installation
+## 🚀 Installation
 
 ### Prerequisites
 - Python 3.11 or higher
@@ -162,18 +158,19 @@ cd vendor-data
 
 # 2. Create and activate a virtual environment
 python -m venv venv
+
 # On Windows:
 venv\Scripts\activate
 # On Linux/macOS:
 source venv/bin/activate
 
-# 3. Install dependencies
+# 3. Install required dependencies
 pip install -r requirements.txt
 ```
 
 ---
 
-## Running
+## 🌐 Application
 
 ### Running Locally
 ```bash
@@ -185,35 +182,38 @@ python app.py
 docker compose up --build
 ```
 
-### Application URLs
-- **Main Portal**: `http://localhost:5000/demo`
+> [!TIP]
+> Once the application starts, navigate to `http://localhost:5000/demo` to access the interactive All-In-One Command Portal.
+
+### Application Endpoints
+- **Master Command Portal**: `http://localhost:5000/demo`
 - **Executive Dashboard**: `http://localhost:5000/executive-dashboard`
-- **OpenAPI / Swagger Specs**: `http://localhost:5000/api/v2/docs`
+- **Interactive Swagger Docs**: `http://localhost:5000/api/v2/docs`
 - **Health Check API**: `http://localhost:5000/api/v2/health`
 
 ---
 
-## Demo Credentials
+## 🔐 Security & Demo Credentials
 
-The demo environment includes pre-seeded user accounts for testing Role-Based Access Control:
+The demo environment includes pre-seeded user personas for testing 5-Role Access Control:
 
-| Role | Email | Password | Access Scope |
+| Role Persona | Email | Password | Access Scope |
 |---|---|---|---|
-| **Admin** | `admin@demo.local` | `Admin123!` | Full system access, score overrides, audit log management |
-| **Manager** | `manager@demo.local` | `Manager123!` | Vendor CRUD operations, report generation |
-| **Auditor** | `auditor@demo.local` | `Auditor123!` | Audit trail inspection, compliance verification |
-| **Analyst** | `analyst@demo.local` | `Analyst123!` | Risk analysis, fraud check viewing, read-only analytics |
-| **Viewer** | `viewer@demo.local` | `Viewer123!` | Read-only directory access |
+| **Admin** | `admin@demo.local` | `Admin123!` | System configuration, score overrides, audit log management |
+| **Manager** | `manager@demo.local` | `Manager123!` | Vendor profile CRUD, report generation |
+| **Auditor** | `auditor@demo.local` | `Auditor123!` | System audit inspection, compliance verification |
+| **Analyst** | `analyst@demo.local` | `Analyst123!` | Anomaly analysis, fraud check viewing, read-only analytics |
+| **Viewer** | `viewer@demo.local` | `Viewer123!` | Read-only directory viewing |
 
 ---
 
-## API Documentation
+## 📄 API Documentation
 
 ### System & Health Endpoints
 | Method | Endpoint | Description |
 |---|---|---|
 | `GET` | `/api/v2/health` | System health check probe |
-| `GET` | `/api/v2/demo/status` | Demo environment status summary |
+| `GET` | `/api/v2/demo/status` | Demo environment status overview |
 | `POST` | `/api/v2/demo/reset` | Resets demo database to baseline state |
 
 ### Authentication Endpoints
@@ -221,72 +221,55 @@ The demo environment includes pre-seeded user accounts for testing Role-Based Ac
 |---|---|---|
 | `POST` | `/api/v2/auth/login` | Authenticates user and initiates session |
 | `POST` | `/api/v2/auth/logout` | Terminates active user session |
-| `GET` | `/api/v2/auth/me` | Returns current user profile and role |
+| `GET` | `/api/v2/auth/me` | Returns active user profile and role |
 
-### Vendor Management Endpoints
+### Vendor Operations Endpoints
 | Method | Endpoint | Description |
 |---|---|---|
-| `GET` | `/api/v2/vendors` | Retrieves paginated vendor records |
-| `POST` | `/api/v2/vendors` | Creates a new vendor entry |
-| `GET` | `/api/v2/vendors/<id>` | Retrieves specific vendor profile details |
-| `PUT` | `/api/v2/vendors/<id>` | Updates an existing vendor profile |
+| `GET` | `/api/v2/vendors` | Retrieves paginated vendor list |
+| `POST` | `/api/v2/vendors` | Creates a new vendor record |
+| `GET` | `/api/v2/vendors/<id>` | Retrieves specific vendor details |
+| `PUT` | `/api/v2/vendors/<id>` | Updates vendor profile information |
 | `DELETE` | `/api/v2/vendors/<id>` | Deletes a vendor record |
 
-### Analytics & Telemetry Endpoints
+### Analytics & Audit Endpoints
 | Method | Endpoint | Description |
 |---|---|---|
-| `GET` | `/api/v2/analytics/executive` | High-level executive KPIs and category breakdowns |
+| `GET` | `/api/v2/analytics/executive` | Returns executive KPIs and sector breakdowns |
 | `GET` | `/api/v2/enterprise/telemetry` | Comprehensive system telemetry data |
-| `GET` | `/api/v2/analytics/geographic` | GIS geographic location coordinate data |
-
-### Risk & Audit Endpoints
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/api/v2/predictive/alerts` | Active predictive risk alerts |
+| `GET` | `/api/v2/analytics/geographic` | GIS location coordinates for map rendering |
+| `GET` | `/api/v2/predictive/alerts` | Predictive risk alerts and anomaly vectors |
 | `GET` | `/api/v2/audit-logs` | System audit log entries with filter parameters |
-| `POST` | `/api/v2/documents/upload` | Validates and uploads vendor document files |
 
 ---
 
-## Testing
+## 🧪 Testing
 
-Execute the test suite using pytest or the included scratch scripts:
+Run the test suite using pytest or the included verification tools:
 
 ```bash
-# Run pytest test suite
+# Run unit and API test suite
 python -m pytest
 
-# Run full API and dashboard verification script
+# Run automated QA dashboard matrix verification
 python scratch/verify_all_dashboards_qa.py
 ```
 
 ---
 
-## Project Modules
+## 📈 Future Scope
 
-- **Vendor Domain Module**: Manages core vendor entities, profile fields, GST/PAN validation, and ORM persistence.
-- **Trust Calculation Engine**: Computes dynamic 0–100 trust scores using weighted compliance, SLA, and verification inputs.
-- **Predictive Risk & Anomaly Engine**: Runs Isolation Forest algorithms to detect financial anomalies and generate risk alerts.
-- **Fraud Detection Module**: Validates tax identifiers, detects duplicate registrations, and flags high-risk vendors.
-- **Compliance & Audit Module**: Tracks document verifications, maintains timeline logs, and records system audit traces.
-- **Security & Authorization Module**: Enforces 5-role RBAC, handles session authorization, and sanitizes input data.
-- **Presentation & Dashboard Module**: Renders web views, interactive charts, GIS maps, and Swagger OpenAPI documentation.
-
----
-
-## Future Scope
-
-- Integration with external government tax verification APIs (GSTN / Income Tax portal).
+- Integration with official government GSTN and Income Tax portal verification APIs.
 - Real-time Webhook notifications for critical fraud alerts and compliance failures.
-- Multi-currency financial risk evaluation and exchange rate adjustment.
-- Support for automated document OCR parsing using cloud vision services.
-- Enhanced role permissions with custom attribute-based access control (ABAC).
-- Automated email alerts for upcoming document expiration dates.
-- SSO (Single Sign-On) support via SAML 2.0 and OAuth2 / OpenID Connect.
-- Production PostgreSQL migration and automated database migration pipelines (Alembic).
+- Multi-currency financial risk evaluation and exchange rate adjustments.
+- Automated document OCR text parsing using cloud vision services.
+- Attribute-Based Access Control (ABAC) for dynamic permission rules.
+- Automated email alerts for impending document expiration dates.
+- Single Sign-On (SSO) integration via OAuth2, OpenID Connect, and SAML 2.0.
+- PostgreSQL migration scripts and automated migration pipelines (Alembic).
 
 ---
 
-## License
+## 📜 License
 
 Distributed under the MIT License. See [LICENSE](LICENSE) for details.

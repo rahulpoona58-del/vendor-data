@@ -1,4 +1,4 @@
-from src.infrastructure.database.models import Vendor, VendorTrustHistory, FraudCheck, VendorComplianceStatus, VendorDocument, AuditLog, User, db
+from src.infrastructure.database.models import Vendor, VendorTrustHistory, FraudCheck, VendorComplianceStatus, VendorDocument, SystemAuditLog, User, db
 import logging
 
 class EnterpriseDataService:
@@ -13,7 +13,7 @@ class EnterpriseDataService:
             fraud_checks = FraudCheck.query.all()
             compliance_profiles = VendorComplianceStatus.query.all()
             documents = VendorDocument.query.all()
-            audit_logs = AuditLog.query.all()
+            audit_logs = SystemAuditLog.query.all()
             users = User.query.all()
             
             total_vendors = len(vendors)
@@ -33,8 +33,8 @@ class EnterpriseDataService:
                 {
                     'id': v.id,
                     'name': v.name,
-                    'city': v.city or 'New Delhi',
-                    'state': v.state or 'Delhi',
+                    'city': getattr(v, 'city', (v.address.split(',')[-1].strip() if v.address else 'Mumbai')),
+                    'state': getattr(v, 'state', 'Maharashtra'),
                     'trust_score': v.trust_score,
                     'trust_level': v.trust_level
                 }

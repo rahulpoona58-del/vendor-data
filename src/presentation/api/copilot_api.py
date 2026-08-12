@@ -12,7 +12,7 @@ copilot_api = Blueprint('copilot_api', __name__)
 def chat():
     """API endpoint to process user natural language questions."""
     data = request.get_json() or {}
-    message = data.get('message')
+    message = data.get('message') or data.get('query') or data.get('prompt')
     session_id = data.get('session_id')
     
     if not message:
@@ -25,7 +25,8 @@ def chat():
     return jsonify({
         'success': True,
         'session_id': session_id,
-        'response': response_text
+        'response': response_text,
+        'answer': response_text
     }), 200
 
 @copilot_api.route('/api/v2/copilot/history', methods=['GET'])

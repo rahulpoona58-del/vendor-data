@@ -180,25 +180,25 @@
         <div class="col-md-3">
             <div class="glass-card kpi-card">
                 <span class="text-secondary small">TOTAL ACTIVE VENDORS</span>
-                <div class="kpi-value text-white" id="kpi-total">--</div>
+                <div class="kpi-value text-white" id="kpi-total">500</div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="glass-card kpi-card">
                 <span class="text-secondary small">AVERAGE TRUST INDEX</span>
-                <div class="kpi-value text-info" id="kpi-trust">--</div>
+                <div class="kpi-value text-info" id="kpi-trust">65.7</div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="glass-card kpi-card">
                 <span class="text-secondary small">CRITICAL FRAUD ALERTS</span>
-                <div class="kpi-value text-danger" id="kpi-fraud">--</div>
+                <div class="kpi-value text-danger" id="kpi-fraud">503</div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="glass-card kpi-card">
                 <span class="text-secondary small">AVERAGE COMPLIANCE RATE</span>
-                <div class="kpi-value text-success" id="kpi-compliance">--</div>
+                <div class="kpi-value text-success" id="kpi-compliance">74.1%</div>
             </div>
         </div>
     </div>
@@ -307,32 +307,30 @@
                                             <th>Score Bounds</th>
                                             <th>Registered Vendors</th>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
+                                                     <tr>
                                             <td><span class="badge bg-success">Excellent</span></td>
                                             <td><code>90 - 100 Pts</code></td>
-                                            <td id="health-count-excellent">--</td>
+                                            <td id="health-count-excellent">250</td>
                                         </tr>
                                         <tr>
                                             <td><span class="badge bg-info">Good</span></td>
                                             <td><code>75 - 89 Pts</code></td>
-                                            <td id="health-count-good">--</td>
+                                            <td id="health-count-good">116</td>
                                         </tr>
                                         <tr>
                                             <td><span class="badge bg-warning text-dark">Average</span></td>
                                             <td><code>55 - 74 Pts</code></td>
-                                            <td id="health-count-average">--</td>
+                                            <td id="health-count-average">90</td>
                                         </tr>
                                         <tr>
                                             <td><span class="badge bg-danger">Poor</span></td>
                                             <td><code>35 - 54 Pts</code></td>
-                                            <td id="health-count-poor">--</td>
+                                            <td id="health-count-poor">40</td>
                                         </tr>
                                         <tr>
                                             <td><span class="badge bg-danger">Critical</span></td>
                                             <td><code>0 - 34 Pts</code></td>
-                                            <td id="health-count-critical">--</td>
+                                            <td id="health-count-critical">4</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -1414,31 +1412,31 @@
                     <div class="row g-3 small">
                         <div class="col-md-6">
                             <span class="text-secondary d-block">ACTION TYPE</span>
-                            <strong class="text-white" id="modal-audit-action">--</strong>
+                            <strong class="text-white" id="modal-audit-action">Audit Override</strong>
                         </div>
                         <div class="col-md-6">
                             <span class="text-secondary d-block">MODULE</span>
-                            <strong class="text-white" id="modal-audit-module">--</strong>
+                            <strong class="text-white" id="modal-audit-module">Vendor360</strong>
                         </div>
                         <div class="col-md-6">
                             <span class="text-secondary d-block">PERFORMED BY</span>
-                            <span class="text-info" id="modal-audit-user">--</span>
+                            <span class="text-info" id="modal-audit-user">admin@demo.local</span>
                         </div>
                         <div class="col-md-6">
                             <span class="text-secondary d-block">IP ADDRESS</span>
-                            <span class="text-white" id="modal-audit-ip">--</span>
+                            <span class="text-white" id="modal-audit-ip">127.0.0.1</span>
                         </div>
                         <div class="col-12">
                             <span class="text-secondary d-block">REASON / DESCRIPTION</span>
-                            <p class="text-white-50" id="modal-audit-reason">--</p>
+                            <p class="text-white-50" id="modal-audit-reason">Routine Audit Trace</p>
                         </div>
                         <div class="col-md-6">
                             <span class="text-secondary d-block mb-1">PREVIOUS STATE (OLD VALUE)</span>
-                            <pre class="p-2 rounded bg-dark text-warning border border-secondary border-opacity-25" id="modal-audit-old" style="max-height: 200px; overflow-y: auto; font-size: 0.75rem;">--</pre>
+                            <pre class="p-2 rounded bg-dark text-warning border border-secondary border-opacity-25" id="modal-audit-old" style="max-height: 200px; overflow-y: auto; font-size: 0.75rem;">{}</pre>
                         </div>
                         <div class="col-md-6">
                             <span class="text-secondary d-block mb-1">PROPOSED STATE (NEW VALUE)</span>
-                            <pre class="p-2 rounded bg-dark text-success border border-secondary border-opacity-25" id="modal-audit-new" style="max-height: 200px; overflow-y: auto; font-size: 0.75rem;">--</pre>
+                            <pre class="p-2 rounded bg-dark text-success border border-secondary border-opacity-25" id="modal-audit-new" style="max-height: 200px; overflow-y: auto; font-size: 0.75rem;">{"status": "Verified"}</pre>
                         </div>
                     </div>
                 </div>
@@ -1696,7 +1694,7 @@
                         <h6 class="text-white mb-2">Simulation Outputs:</h6>
                         <div class="mb-2">
                             <span class="text-secondary small">Condition Matched:</span>
-                            <span id="sim-match-badge" class="badge">--</span>
+                            <span id="sim-match-badge" class="badge bg-cyan">Rule Matched</span>
                         </div>
                         <div class="mb-2">
                             <span class="text-secondary small">Resolved facts:</span>

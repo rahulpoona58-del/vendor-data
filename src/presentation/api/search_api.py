@@ -74,3 +74,39 @@ def vendors_list_search():
         trust_level=trust_level
     )
     return jsonify(result), 200
+
+@search_api.route('/api/v2/vendors', methods=['GET', 'POST'])
+@login_required
+def vendors_crud_gateway():
+    """Handles GET list/search and POST creation for vendor records."""
+    from src.infrastructure.database.models import db, Vendor
+    
+    if request.method == 'POST':
+        data = request.get_json() or {}
+        new_v = Vendor(
+            name=data.get('name', 'New Enterprise Vendor'),
+            category=data.get('category', 'General Procurement'),
+            email=data.get('email', 'vendor@enterprise.local'),
+            phone=data.get('phone', '+91 9000000000'),
+            address=data.get('address', 'Mumbai, Maharashtra'),
+            gst_number=data.get('gst_number', '27AAAAA0000A1Z5'),
+            pan_number=data.get('pan_number', 'AAAAA0000A'),
+            bank_account=data.get('bank_account', '1234567890'),
+            trust_score=75.0,
+            status='Active'
+        )
+        db.session.add(new_v)
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Vendor created successfully', 'vendor': new_v.to_dict()}), 201
+    
+    # GET method handling search & category parameters
+    search_q = request.args.get('search', request.args.get('q', request.args.get('query', '')))
+    cat_q = request.args.get('category')
+    
+    result = SmartSearchEngine.execute_search(
+        query=search_q,
+        category=cat_q,
+        page=int(request.args.get('page', 1)),
+        limit=int(request.args.get('limit', 50))
+    )
+    return jsonify(result), 200

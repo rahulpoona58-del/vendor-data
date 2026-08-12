@@ -15,6 +15,7 @@ def get_predictive_telemetry():
     return jsonify(result), 200
 
 @prediction_api.route('/api/v2/predictive/alerts', methods=['GET'])
+@prediction_api.route('/api/v2/predictions/alerts', methods=['GET'])
 @login_required
 def get_predictive_alerts():
     """API endpoint returning concrete threat prediction warnings and confidence ratings."""

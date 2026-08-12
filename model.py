@@ -1,41 +1,51 @@
-import pandas as pd
-from trust_score import calculate_trust_score, get_trust_level
+import os
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from src.infrastructure.database.models import Vendor
 
-# Load dataset
-df = pd.read_csv("vendors_20_columns.csv")
-
-# Clean data
-df.fillna(0, inplace=True)
-
-# Add trust score
-df['trust_score'] = df.apply(calculate_trust_score, axis=1)
-df['trust_level'] = df['trust_score'].apply(get_trust_level)
-
-
-# ✅ REQUIRED FUNCTION
 def get_vendor(vendor_id):
-    vendor = df[df['vendor_id'] == vendor_id]
-    
-    if vendor.empty:
+    """Retrieves a single vendor profile from the unified database by ID."""
+    try:
+        vendor_id = int(vendor_id)
+        v = Vendor.query.get(vendor_id)
+        if not v:
+            v = Vendor.query.filter_by(id=vendor_id).first()
+        return v.to_dict() if v else None
+    except Exception:
         return None
-    
-    return vendor.to_dict(orient='records')[0]
 
-
-# ✅ DASHBOARD
 def get_all_vendors():
-    return df.to_dict(orient='records')
+    """Retrieves all vendor profiles from the unified database."""
+    try:
+        vendors = Vendor.query.all()
+        return [v.to_dict() for v in vendors]
+    except Exception:
+        return []
 
-
-# ✅ TOP VENDORS
 def get_top_vendors(n=5):
-    return df.sort_values(by='trust_score', ascending=False).head(n).to_dict(orient='records')
+    """Retrieves top vendors sorted by trust score from the unified database."""
+    try:
+        vendors = Vendor.query.order_by(Vendor.trust_score.desc()).limit(n).all()
+        return [v.to_dict() for v in vendors]
+    except Exception:
+        return []
 
-
-# ✅ CHART
 def generate_chart():
-    df['trust_score'].hist()
-    plt.title("Trust Score Distribution")
-    plt.savefig("static/chart.png")
-    plt.close()
+    """Generates the trust score distribution histogram from live database records."""
+    try:
+        vendors = Vendor.query.all()
+        scores = [v.trust_score for v in vendors] if vendors else [75.0]
+        
+        plt.figure(figsize=(8, 4))
+        plt.hist(scores, bins=10, color='#3b82f6', edgecolor='#1e3a8a')
+        plt.title("Vendor Trust Score Distribution", fontsize=12, fontweight='bold')
+        plt.xlabel("Trust Score (0 - 100)")
+        plt.ylabel("Vendor Count")
+        plt.tight_layout()
+        
+        os.makedirs("static", exist_ok=True)
+        plt.savefig("static/chart.png", dpi=150)
+        plt.close()
+    except Exception as e:
+        print(f"Chart generation error: {e}")

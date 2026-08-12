@@ -55,6 +55,8 @@ class Vendor(db.Model):
         
     def to_dict(self):
         return {
+            'id': self.id,
+            'name': self.name,
             'vendor_id': self.id,
             'vendor_name': self.name,
             'category': self.category,

@@ -5,8 +5,20 @@ from model import get_vendor, get_all_vendors, get_top_vendors, generate_chart
 app = create_app()
 
 
+# ENTERPRISE PLATFORM LANDING PAGE (Primary Application Entry Point)
 @app.route('/')
 def home():
+    """Serves the Enterprise Executive Dashboard as the primary application entry point."""
+    return render_template("executive_dashboard.html")
+
+@app.route('/login')
+def login_page():
+    """Renders the Enterprise Authentication & Role Portal."""
+    return render_template("demo.html")
+
+@app.route('/legacy-search')
+def legacy_search():
+    """Preserved legacy vendor search interface."""
     return render_template("index.html")
 
 #  FORM RESULT (POST)

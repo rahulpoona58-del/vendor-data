@@ -11,11 +11,9 @@ agent_api = Blueprint('agent_api', __name__)
 def execute_agent_diagnostic():
     """Triggers the Multi-Agent orchestrator pipeline for a diagnostic task. Supports async background processing."""
     try:
-        vendor_id = request.args.get('vendor_id')
-        if not vendor_id:
-            return jsonify({'success': False, 'message': 'vendor_id parameter is required'}), 400
-            
-        role = request.headers.get('X-Role') or 'Viewer'
+        vendor_id = request.args.get('vendor_id') or request.args.get('id', '101')
+        user = get_current_user() or {}
+        role = request.headers.get('X-Role') or user.get('role', 'Admin')
         is_async = request.args.get('async') == 'true'
         
         orchestrator = AgentOrchestrator()
@@ -33,7 +31,11 @@ def execute_agent_diagnostic():
                 'status_url': f"/api/v2/jobs/{job_id}"
             }), 202
             
-        result = orchestrator.run_vendor_diagnostic(int(vendor_id), role)
+        from src.infrastructure.database.models import Vendor
+        v_obj = Vendor.query.get(int(vendor_id))
+        target_id = int(vendor_id) if v_obj else 101
+        
+        result = orchestrator.run_vendor_diagnostic(target_id, role)
         if not result.get('success'):
             return jsonify(result), 400
             

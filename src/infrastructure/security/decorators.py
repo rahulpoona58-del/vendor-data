@@ -30,12 +30,8 @@ def get_current_user():
                 'email': 'api_user@system.internal' # Placeholder for API logs
             }
             
-    # 3. Default Demo / Guest Session Context
-    return {
-        'user_id': 1,
-        'email': 'admin@demo.local',
-        'role': 'Admin'
-    }
+    # 3. No authentication context found
+    return None
 
 def login_required(f):
     """Enforces that the requesting client is authenticated before proceeding."""

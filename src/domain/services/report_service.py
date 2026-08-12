@@ -18,7 +18,11 @@ class ReportService:
             filename = f"{report_type.lower().replace(' ', '_')}_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}"
             
             # 2. Export to target format
-            if export_format.upper() == 'CSV':
+            if export_format.upper() == 'JSON':
+                content = df.to_json(orient='records', indent=2)
+                mime_type = "application/json"
+                filename += ".json"
+            elif export_format.upper() == 'CSV':
                 content = df.to_csv(index=False)
                 mime_type = "text/csv"
                 filename += ".csv"

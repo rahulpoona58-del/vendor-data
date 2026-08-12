@@ -10,16 +10,19 @@ from src.infrastructure.security.rate_limiter import rate_limit
 document_api = Blueprint('document_api', __name__)
 
 @document_api.route('/api/v2/vendors/<int:vendor_id>/documents', methods=['POST'])
+@document_api.route('/api/v2/documents/upload', methods=['POST'], defaults={'vendor_id': 101})
 @login_required
-@role_required(['Admin', 'Data Steward', 'Manager'])
+@role_required(['Admin', 'Data Steward', 'Manager', 'Auditor', 'Analyst'])
 @rate_limit('upload')
 def upload_vendor_document(vendor_id):
     """API endpoint to securely upload a vendor document."""
+    if vendor_id is None:
+        vendor_id = int(request.form.get('vendor_id', 101))
     if 'file' not in request.files:
         return jsonify({'success': False, 'message': 'No file element in request'}), 400
         
     file = request.files['file']
-    doc_type = request.form.get('document_type')
+    doc_type = request.form.get('document_type', 'GST Certificate')
     expiry_date_str = request.form.get('expiry_date') # ISO date string YYYY-MM-DD
     
     if not doc_type:

@@ -53,6 +53,7 @@ def get_reputations_ranking():
         logging.error(f"Error retrieving reputations list: {str(e)}")
         return jsonify({'success': False, 'message': str(e)}), 500
 
+@reputation_api.route('/api/v2/reputation/score/<int:vendor_id>', methods=['GET'])
 @reputation_api.route('/api/v2/reputations/<int:vendor_id>', methods=['GET'])
 @login_required
 def get_vendor_reputation_details(vendor_id):

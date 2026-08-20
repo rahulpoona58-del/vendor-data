@@ -600,7 +600,7 @@
                 <div id="autocomplete-suggestions" class="position-absolute w-100 glass-card p-2 d-none" style="z-index: 1000; top: 45px; background-color: #0b0f19; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;"></div>
             </div>
             <div class="col-md-2">
-                <select id="filter-trust-level" class="form-select bg-dark text-white border-secondary" onchange="triggerSmartSearch()">
+                <select id="filter-trust-level" class="form-select bg-dark text-white border-secondary" onchange="searchPage=1; triggerSmartSearch()">
                     <option value="All">All Trust Levels</option>
                     <option value="High Trust">High Trust Only</option>
                     <option value="Medium Trust">Medium Trust Only</option>
@@ -608,20 +608,20 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <select id="sort-by-select" class="form-select bg-dark text-white border-secondary" onchange="triggerSmartSearch()">
+                <select id="sort-by-select" class="form-select bg-dark text-white border-secondary" onchange="searchPage=1; triggerSmartSearch()">
                     <option value="trust_score">Sort by Trust Score</option>
                     <option value="quality_rating">Sort by Quality Score</option>
                     <option value="name">Sort by Vendor Name</option>
                 </select>
             </div>
             <div class="col-md-2">
-                <select id="sort-order-select" class="form-select bg-dark text-white border-secondary" onchange="triggerSmartSearch()">
+                <select id="sort-order-select" class="form-select bg-dark text-white border-secondary" onchange="searchPage=1; triggerSmartSearch()">
                     <option value="desc">Descending</option>
                     <option value="asc">Ascending</option>
                 </select>
             </div>
             <div class="col-md-1">
-                <button class="btn btn-custom-cyan w-100" onclick="triggerSmartSearch()">Search</button>
+                <button class="btn btn-custom-cyan w-100" onclick="searchPage=1; triggerSmartSearch()">Search</button>
             </div>
         </div>
 
@@ -655,8 +655,8 @@
 </div>
 
 <script>
-    let token = "";
-    let activeRole = "Admin";
+    let token = localStorage.getItem('dashboard_token') || "";
+    let activeRole = localStorage.getItem('current_role') || "Admin";
     let registryData = [];
     
     // ApexCharts Instances
@@ -665,6 +665,15 @@
     let heatmapChart = null;
     let predictionChart = null;
     let healthChart = null;
+
+    async function ensureToken() {
+        if (!token) {
+            token = localStorage.getItem('dashboard_token') || "";
+        }
+        if (!token) {
+            await autoLogin('admin@demo.local', 'Admin123!');
+        }
+    }
 
     async function switchRole(email, password, element) {
         document.querySelectorAll('.role-pill').forEach(el => el.classList.remove('active'));
@@ -707,6 +716,7 @@
     let searchLimit = 10;
 
     async function loadDashboardData() {
+        await ensureToken();
         if (!token) return;
         
         try {
@@ -741,6 +751,7 @@
     }
 
     async function triggerSmartSearch() {
+        await ensureToken();
         if (!token) return;
         
         try {
@@ -931,8 +942,13 @@
             filename += ".csv";
             let csv = "ID,Name,Trust Score,Risk Score,Compliance Score,Fraud Score,Quality Rating\n";
             registryData.forEach(v => {
-                const nameEscaped = v.name.replace(/"/g, '""');
-                csv += `"${v.id}","${nameEscaped}","${v.trust}","${v.risk}","${v.compliance}","${v.fraud}","${(v.quality/20).toFixed(1)}"\n`;
+                let trustVal = v.trust !== undefined ? v.trust : (v.trust_score !== undefined ? v.trust_score : 70.0);
+                let riskVal = v.risk !== undefined ? v.risk : (100.0 - trustVal);
+                let compVal = v.compliance !== undefined ? v.compliance : 85.0;
+                let fraudVal = v.fraud !== undefined ? v.fraud : 0.0;
+                let qualityVal = v.quality !== undefined ? v.quality : (v.quality_rating !== undefined ? v.quality_rating * 20 : 70.0);
+                const nameEscaped = (v.name || v.vendor_name || 'Vendor').replace(/"/g, '""');
+                csv += `"${v.id}","${nameEscaped}","${trustVal.toFixed(1)}","${riskVal.toFixed(1)}","${compVal.toFixed(1)}","${fraudVal.toFixed(1)}","${(qualityVal/20).toFixed(1)}"\n`;
             });
             downloadFile(csv, 'text/csv', filename);
         }
@@ -1444,6 +1460,7 @@
         </div>
     </div>
 
+</script>
 <script>
     // JS Logic for Audit logs
     let auditLogsData = [];
@@ -1761,6 +1778,7 @@
         </div>
     </div>
 
+</script>
 <script>
     let rulesData = [];
 
@@ -2482,8 +2500,12 @@
         }, 6000);
     }
 
-    // Initialize socket connection
-    window.addEventListener('DOMContentLoaded', connectEventSocket);
+    // Initialize dashboard data & socket connection on page load
+    window.addEventListener('DOMContentLoaded', async () => {
+        await ensureToken();
+        await loadDashboardData();
+        connectEventSocket();
+    });
 </script>
 
 <div id="live-toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080;"></div>

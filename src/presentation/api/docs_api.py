@@ -41,6 +41,7 @@ def swagger_ui():
     """Renders interactive Swagger UI documentation."""
     return render_template_string(SWAGGER_UI_HTML)
 
+@docs_api.route('/api/v2/swagger.json', methods=['GET'])
 @docs_api.route('/api/v2/docs/openapi.json', methods=['GET'])
 def get_openapi_spec():
     """Serves raw OpenAPI 3.0.3 JSON specification."""

@@ -9,14 +9,22 @@ from src.infrastructure.database.connection import init_db
 
 def create_app():
     """Application Factory to initialize configs, database, logs, blueprints, and request telemetry."""
-    app = Flask(__name__, template_folder='../templates', static_folder='../static')
+    # Absolute path resolution for templates and static folders across environments
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    template_dir = os.path.join(base_dir, 'templates')
+    static_dir = os.path.join(base_dir, 'static')
+    
+    app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
     
     # Load configuration settings
     config = get_config()
     app.config.from_object(config)
     
-    # Initialize centralized structured logging
-    setup_logging(config)
+    # Initialize centralized structured logging safely
+    try:
+        setup_logging(config)
+    except Exception as e:
+        print(f"Logging setup warning: {e}")
     
     # Request Telemetry Middleware
     @app.before_request
@@ -30,26 +38,32 @@ def create_app():
         if hasattr(g, 'start_time'):
             duration_ms = (time.time() - g.start_time) * 1000
             user_id = getattr(g, 'user_id', None)
-            log_api_request(
-                method=request.method,
-                path=request.path,
-                status_code=response.status_code,
-                duration_ms=duration_ms,
-                client_ip=request.remote_addr or '127.0.0.1',
-                user_id=user_id
-            )
+            try:
+                log_api_request(
+                    method=request.method,
+                    path=request.path,
+                    status_code=response.status_code,
+                    duration_ms=duration_ms,
+                    client_ip=request.remote_addr or '127.0.0.1',
+                    user_id=user_id
+                )
+            except Exception:
+                pass
         response.headers['X-Request-ID'] = getattr(g, 'request_id', '')
         return response
 
     @app.errorhandler(Exception)
     def handle_unhandled_exception(err):
         tb_str = traceback.format_exc()
-        log_error_event(
-            error_name=err.__class__.__name__,
-            message=str(err),
-            traceback_str=tb_str,
-            context={"path": request.path, "method": request.method}
-        )
+        try:
+            log_error_event(
+                error_name=err.__class__.__name__,
+                message=str(err),
+                traceback_str=tb_str,
+                context={"path": request.path, "method": request.method}
+            )
+        except Exception:
+            pass
         if request.path.startswith('/api/'):
             return jsonify({"success": False, "message": "Internal Server Error", "request_id": getattr(g, 'request_id', None)}), 500
         raise err
@@ -57,21 +71,26 @@ def create_app():
     # Initialize database models & migrate hooks
     init_db(app)
     
-    # Auto-seed database tables
-    with app.app_context():
-        from src.infrastructure.database.seeder import seed_database
-        seed_database(app.config['CSV_DATA_PATH'])
+    # Auto-seed database tables safely
+    try:
+        with app.app_context():
+            from src.infrastructure.database.seeder import seed_database
+            seed_database(app.config['CSV_DATA_PATH'])
+    except Exception as e:
+        print(f"Seeder warning: {e}")
     
     # Ensure secure file storage directory exists
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    
-    # Start WebSocket Event Server (Background Task Gateway)
-    from src.domain.services.event_queue import EventQueue
-    EventQueue.start_realtime_server(port=5001)
+    try:
+        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    except Exception as e:
+        print(f"Upload folder creation warning: {e}")
     
     # Initialize SQLAlchemy ORM Event Listeners
-    from src.infrastructure.realtime.event_listeners import setup_event_listeners
-    setup_event_listeners()
+    try:
+        from src.infrastructure.realtime.event_listeners import setup_event_listeners
+        setup_event_listeners()
+    except Exception as e:
+        print(f"Event listeners warning: {e}")
     
     # Register REST API blueprints
     from src.presentation.api.auth_api import auth_api

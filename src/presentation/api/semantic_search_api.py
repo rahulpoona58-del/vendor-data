@@ -5,6 +5,7 @@ import logging
 
 semantic_search_api = Blueprint('semantic_search_api', __name__)
 
+@semantic_search_api.route('/api/v2/semantic-search', methods=['GET'])
 @semantic_search_api.route('/api/v2/search/semantic', methods=['GET'])
 @login_required
 def execute_semantic_search_route():

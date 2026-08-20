@@ -83,13 +83,26 @@ def vendors_crud_gateway():
     
     if request.method == 'POST':
         data = request.get_json() or {}
+        email = data.get('email', 'vendor@enterprise.local')
+        gst_number = data.get('gst_number', '27AAAAA0000A1Z5')
+        
+        # Check for existing vendor with matching email or GSTIN to maintain unique identifiers
+        existing = Vendor.query.filter((Vendor.email == email) | (Vendor.gst_number == gst_number)).first()
+        if existing:
+            existing.name = data.get('name', existing.name)
+            existing.category = data.get('category', existing.category)
+            existing.phone = data.get('phone', existing.phone)
+            existing.address = data.get('address', existing.address)
+            db.session.commit()
+            return jsonify({'success': True, 'message': 'Vendor profile updated successfully', 'vendor': existing.to_dict()}), 200
+
         new_v = Vendor(
             name=data.get('name', 'New Enterprise Vendor'),
             category=data.get('category', 'General Procurement'),
-            email=data.get('email', 'vendor@enterprise.local'),
+            email=email,
             phone=data.get('phone', '+91 9000000000'),
             address=data.get('address', 'Mumbai, Maharashtra'),
-            gst_number=data.get('gst_number', '27AAAAA0000A1Z5'),
+            gst_number=gst_number,
             pan_number=data.get('pan_number', 'AAAAA0000A'),
             bank_account=data.get('bank_account', '1234567890'),
             trust_score=75.0,

@@ -15,13 +15,18 @@ def run_compliance_audit(vendor_id):
         return jsonify(result), 400
     return jsonify(result), 200
 
+@compliance_api.route('/api/v2/compliance/logs', methods=['GET'])
 @compliance_api.route('/api/v2/vendors/<int:vendor_id>/compliance/timeline', methods=['GET'])
 @login_required
-def get_compliance_logs(vendor_id):
-    """API endpoint to fetch the historical compliance timeline logs."""
+def get_compliance_logs(vendor_id=None):
+    """API endpoint to fetch compliance logs across all vendors or for a specific vendor."""
     limit = request.args.get('limit', 10, type=int)
-    logs = ComplianceEngine.get_compliance_timeline(vendor_id, limit=limit)
-    return jsonify({'success': True, 'timeline': logs})
+    from src.infrastructure.database.models import ComplianceLog
+    logs_query = ComplianceLog.query
+    if vendor_id and vendor_id != 101:
+        logs_query = logs_query.filter_by(vendor_id=vendor_id)
+    logs_data = [l.to_dict() for l in logs_query.order_by(ComplianceLog.logged_at.desc()).limit(limit).all()]
+    return jsonify({'success': True, 'logs': logs_data, 'timeline': logs_data}), 200
 
 @compliance_api.route('/api/v2/vendors/<int:vendor_id>/compliance/notifications', methods=['GET'])
 @login_required

@@ -58,6 +58,8 @@ pytestdebug.log
 instance/
 instance/*
 !instance/.gitkeep
+uploads/
+uploads/*
 
 # Scrapy stuff:
 .scrapy

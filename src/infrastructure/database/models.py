@@ -177,7 +177,7 @@ class DataCleaningSuggestion(db.Model):
             'confidence': self.confidence,
             'reason': self.reason,
             'status': self.status,
-            'detected_at': self.detected_at.isoformat(),
+            'detected_at': self.detected_at.isoformat() if self.detected_at else None,
             'applied_at': self.applied_at.isoformat() if self.applied_at else None
         }
 
@@ -347,7 +347,7 @@ class ComplianceLog(db.Model):
             'compliance_score': self.compliance_score,
             'status': self.status,
             'description': self.description,
-            'logged_at': self.logged_at.isoformat()
+            'logged_at': self.logged_at.isoformat() if self.logged_at else None
         }
 
 class ComplianceNotification(db.Model):

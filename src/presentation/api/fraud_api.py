@@ -16,6 +16,15 @@ def trigger_fraud_scan(vendor_id):
         return jsonify(result), 400
     return jsonify(result), 200
 
+@fraud_api.route('/api/v2/fraud/checks', methods=['GET'])
+@login_required
+def get_all_fraud_checks():
+    """API endpoint to retrieve active fraud checks across all vendors."""
+    checks = FraudCheck.query.filter(FraudCheck.risk_level.in_(['High Risk', 'Critical Risk', 'Medium Risk'])).limit(50).all()
+    if not checks:
+        checks = FraudCheck.query.limit(50).all()
+    return jsonify({'success': True, 'fraud_checks': [c.to_dict() for c in checks], 'count': len(checks)})
+
 @fraud_api.route('/api/v2/vendors/<int:vendor_id>/fraud/alerts', methods=['GET'])
 @login_required
 def get_vendor_fraud_alerts(vendor_id):

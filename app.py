@@ -1,8 +1,14 @@
-from flask import render_template, request
+from flask import render_template, request, jsonify
 from src import create_app
 from model import get_vendor, get_all_vendors, get_top_vendors, generate_chart
 
 app = create_app()
+
+
+@app.route('/health')
+def health():
+    """Unauthenticated system health check endpoint."""
+    return jsonify({"status": "healthy"}), 200
 
 
 # ENTERPRISE PLATFORM LANDING PAGE (Primary Application Entry Point)
@@ -148,4 +154,12 @@ def chart():
 
 
 if __name__ == "__main__":
+    # Start real-time background WebSocket server for local persistent development
+    if not os.getenv('VERCEL') and not os.getenv('VERCEL_ENV'):
+        try:
+            from src.domain.services.event_queue import EventQueue
+            EventQueue.start_realtime_server(port=5001)
+        except Exception as e:
+            print(f"WebSocket server startup warning: {e}")
+            
     app.run(debug=True, host='0.0.0.0')

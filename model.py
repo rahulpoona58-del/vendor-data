@@ -1,4 +1,5 @@
 import os
+os.environ['MPLCONFIGDIR'] = os.getenv('MPLCONFIGDIR', '/tmp/matplotlib')
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
